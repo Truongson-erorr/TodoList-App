@@ -55,15 +55,14 @@ fun CalendarScreen(
                 } catch (e: Exception) {
                     false
                 }
-            }?.take(10) // Chỉ lấy 10 ký tự đầu yyyy-MM-dd
+            }?.take(10)
         }.toSet()
     }
 
-    // Modern Gradient Background
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color(0xFF121212))
     ) {
         Column(
             modifier = Modifier
@@ -74,11 +73,11 @@ fun CalendarScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(380.dp) // Giới hạn chiều cao
+                    .height(360.dp)
                     .padding(vertical = 8.dp),
                 shape = RoundedCornerShape(12.dp),
                 elevation = 8.dp,
-                backgroundColor = Color.White
+                backgroundColor = Color(0xFF2C2C2C)
             ) {
                 Box(
                     modifier = Modifier
@@ -94,12 +93,11 @@ fun CalendarScreen(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            // Notes Title
             Text(
                 text = "Ghi chú ngày $selectedDate",
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
-                color = Color(0xFF1A1A1A),
+                color = Color.LightGray,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)

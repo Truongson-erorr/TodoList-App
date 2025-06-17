@@ -32,18 +32,18 @@ fun Register(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF1F6FA))
+            .background(Color(0xFF121212)) // Nền đen xám
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
         Card(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(10.dp),
+            backgroundColor = Color(0xFF1E1E1E), // Card màu tối
             elevation = 8.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .background(Color.White)
                     .padding(24.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -52,7 +52,7 @@ fun Register(navController: NavController) {
                     text = "Tạo Tài Khoản",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = Color(0xFFFFFFFF) // Trắng
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -60,10 +60,16 @@ fun Register(navController: NavController) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Họ Tên", fontSize = 12.sp) },
+                    label = { Text("Họ Tên", fontSize = 12.sp, color = Color(0xFFAAAAAA)) },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color(0xFFFFFFFF),
+                        cursorColor = Color(0xFF6200EE),
+                        focusedBorderColor = Color(0xFF6200EE),
+                        unfocusedBorderColor = Color(0xFF444444)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -71,10 +77,16 @@ fun Register(navController: NavController) {
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email", fontSize = 12.sp) },
+                    label = { Text("Email", fontSize = 12.sp, color = Color(0xFFAAAAAA)) },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color(0xFFFFFFFF),
+                        cursorColor = Color(0xFF6200EE),
+                        focusedBorderColor = Color(0xFF6200EE),
+                        unfocusedBorderColor = Color(0xFF444444)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -82,11 +94,17 @@ fun Register(navController: NavController) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Mật khẩu", fontSize = 12.sp) },
+                    label = { Text("Mật khẩu", fontSize = 12.sp, color = Color(0xFFAAAAAA)) },
                     shape = RoundedCornerShape(12.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color(0xFFFFFFFF),
+                        cursorColor = Color(0xFF6200EE),
+                        focusedBorderColor = Color(0xFF6200EE),
+                        unfocusedBorderColor = Color(0xFF444444)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -94,11 +112,17 @@ fun Register(navController: NavController) {
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text("Xác nhận mật khẩu", fontSize = 12.sp) },
+                    label = { Text("Xác nhận mật khẩu", fontSize = 12.sp, color = Color(0xFFAAAAAA)) },
                     shape = RoundedCornerShape(12.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color(0xFFFFFFFF),
+                        cursorColor = Color(0xFF6200EE),
+                        focusedBorderColor = Color(0xFF6200EE),
+                        unfocusedBorderColor = Color(0xFF444444)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -144,7 +168,7 @@ fun Register(navController: NavController) {
                                 }
                             }
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF6200EE)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
@@ -158,7 +182,7 @@ fun Register(navController: NavController) {
                 TextButton(onClick = {
                     navController.navigate("Login")
                 }) {
-                    Text("Đã có tài khoản? Đăng nhập", color = Color.Black, fontSize = 10.sp)
+                    Text("Đã có tài khoản? Đăng nhập", color = Color(0xFF6200EE), fontSize = 10.sp)
                 }
             }
         }

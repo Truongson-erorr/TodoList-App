@@ -31,6 +31,7 @@ fun MainScreen(navController: NavController) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     Scaffold(
+        backgroundColor = Color.Black,
         bottomBar = {
             Box(
                 modifier = Modifier
@@ -45,15 +46,15 @@ fun MainScreen(navController: NavController) {
                     contentColor = Color.White,
                     elevation = 0.dp,
                     modifier = Modifier
-                        .height(64.dp)
+                        .height(34.dp)
                 ) {
                     BottomNavigationItem(
                         icon = { Icon(Icons.Default.Edit, contentDescription = "To Do", modifier = Modifier.size(18.dp) ) },
                         label = { Text("Note", fontSize = 10.sp) },
                         selected = selectedTab == 0,
                         onClick = { selectedTab = 0 },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Gray
+                        selectedContentColor = Color(0xFF6200EE),
+                        unselectedContentColor = Color.White
                     )
 
                     BottomNavigationItem(
@@ -61,24 +62,24 @@ fun MainScreen(navController: NavController) {
                         label = { Text("To Do", fontSize = 10.sp) },
                         selected = selectedTab == 1,
                         onClick = { selectedTab = 1 },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Gray
+                        selectedContentColor = Color(0xFF6200EE),
+                        unselectedContentColor = Color.White
                     )
                     BottomNavigationItem(
                         icon = { Icon(Icons.Default.DateRange, contentDescription = "To Do", modifier = Modifier.size(18.dp)) },
                         label = { Text("Calendar", fontSize = 10.sp) },
                         selected = selectedTab == 2,
                         onClick = { selectedTab = 2 },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Gray
+                        selectedContentColor = Color(0xFF6200EE),
+                        unselectedContentColor = Color.White
                     )
                     BottomNavigationItem(
                         icon = { Icon(Icons.Default.AccountCircle, contentDescription = "To Do", modifier = Modifier.size(18.dp)) },
                         label = { Text("Profile", fontSize = 10.sp) },
                         selected = selectedTab == 3,
                         onClick = { selectedTab = 3 },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Gray
+                        selectedContentColor = Color(0xFF6200EE),
+                        unselectedContentColor = Color.White
                     )
                 }
             }

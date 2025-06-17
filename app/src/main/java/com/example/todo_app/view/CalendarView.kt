@@ -30,8 +30,7 @@ fun CalendarView(
     val firstDayOfMonth = currentYearMonth.atDay(1)
     val daysInMonth = currentYearMonth.lengthOfMonth()
 
-    // Lấy thứ ngày đầu tháng (1=Monday,...)
-    val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value // 1-7 (Mon-Sun)
+    val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -40,12 +39,12 @@ fun CalendarView(
             text = "${currentYearMonth.month.name} ${currentYearMonth.year}",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
+            color = Color.LightGray,
             fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Header thứ trong tuần
         Row(modifier = Modifier.fillMaxWidth()) {
             val daysOfWeek = listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
             daysOfWeek.forEach { day ->
@@ -53,7 +52,7 @@ fun CalendarView(
                     modifier = Modifier.weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = day, color = Color.Gray, fontSize = 14.sp)
+                    Text(text = day, color = Color.LightGray, fontSize = 14.sp)
                 }
             }
         }
@@ -84,7 +83,7 @@ fun CalendarView(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
                                     text = dayCounter.toString(),
-                                    color = if (date == today) Color.Red else Color.Black
+                                    color = if (date == today) Color.Red else Color.White
                                 )
                                 if (hasNote) {
                                     Spacer(modifier = Modifier.height(4.dp))

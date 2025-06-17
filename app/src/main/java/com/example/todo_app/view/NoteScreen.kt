@@ -62,7 +62,7 @@ fun NoteScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color(0xFF121212))
     ) {
         Column(
             modifier = Modifier
@@ -85,8 +85,8 @@ fun NoteScreen(
                     .fillMaxWidth()
                     .height((70 * screenScale).dp)
                     .padding(bottom = (12 * screenScale).dp)
-                    .border(1.dp, Color(0xFFE5E7EB), RoundedCornerShape((12 * screenScale).dp)),
-                placeholder = { Text("Tìm kiếm theo tên ghi chú...", fontSize = 12.sp) },
+                    .border(1.dp, Color(0xFF1E1E1E), RoundedCornerShape((12 * screenScale).dp)),
+                placeholder = { Text("Tìm kiếm theo tên ghi chú...", fontSize = 12.sp, color = Color.LightGray) },
                 singleLine = true,
                 leadingIcon = {
                     Icon(
@@ -97,7 +97,8 @@ fun NoteScreen(
                 },
                 shape = RoundedCornerShape((12 * screenScale).dp),
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(0xFFF5F5F5),
+                    textColor = Color.White,
+                    backgroundColor = Color(0xFF1E1E1E),
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 )
@@ -114,8 +115,8 @@ fun NoteScreen(
                     Button(
                         onClick = { selectedCategory = category },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (isSelected) Color(0xFF6200EE) else Color(0xFFE0E0E0),
-                            contentColor = if (isSelected) Color.White else Color.Black
+                            backgroundColor = if (isSelected) Color(0xFF6200EE) else Color(0xFF1E1E1E),
+                            contentColor = if (isSelected) Color.White else Color.LightGray
                         ),
                         shape = RoundedCornerShape(50),
                         contentPadding = PaddingValues(horizontal = (12 * screenScale).dp, vertical = (6 * screenScale).dp),
@@ -234,13 +235,14 @@ fun NoteCard(
     }
 
     Card(
-        shape = RoundedCornerShape((10 * scale).dp),
-        elevation = 6.dp,
-        modifier = Modifier.fillMaxWidth()
+        shape = RoundedCornerShape((12 * scale).dp),
+        modifier = Modifier
+            .fillMaxWidth(),
+        backgroundColor = Color(0xFF2C2C2C),
     ) {
         Column(
             modifier = Modifier
-                .background(Color.White)
+                .background(Color(0xFF2C2C2C))
                 .padding((10 * scale).dp)
         ) {
             Row(
@@ -253,14 +255,14 @@ fun NoteCard(
                             text = note.title,
                             fontSize = (12 * scale).sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colors.primaryVariant
+                            color = Color.White
                         )
                         if (note.isPinned) {
                             Spacer(modifier = Modifier.width((4 * scale).dp))
                             Icon(
                                 imageVector = Icons.Default.Star,
                                 contentDescription = "Ghim",
-                                tint = Color.Red,
+                                tint = Color.Yellow,
                                 modifier = Modifier.size((16 * scale).dp)
                             )
                         }
@@ -269,7 +271,7 @@ fun NoteCard(
                     Text(
                         text = note.description,
                         fontSize = (10 * scale).sp,
-                        color = Color.DarkGray
+                        color = Color.LightGray
                     )
                     Spacer(modifier = Modifier.height((2 * scale).dp))
                     Text(
@@ -286,28 +288,31 @@ fun NoteCard(
 
                 Box {
                     IconButton(onClick = { expanded = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Tùy chọn")
+                        Icon(
+                            Icons.Default.MoreVert,
+                            contentDescription = "Tùy chọn",
+                            tint = Color.White
+                        )
                     }
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
                         modifier = Modifier
-                            .background(Color.White, RoundedCornerShape((10 * scale).dp))
-                            .border(1.dp, Color(0xFFE5E7EB), RoundedCornerShape((10 * scale).dp))
+                            .background(Color(0xFF121212))
                             .width((140 * scale).dp)
                     ) {
                         DropdownMenuItem(onClick = {
                             expanded = false
                             onEdit()
                         }) {
-                            Text("Sửa", fontSize = (14 * scale).sp, color = Color.Black)
+                            Text("Sửa", fontSize = (14 * scale).sp, color = Color.White)
                         }
 
                         DropdownMenuItem(onClick = {
                             expanded = false
                             onDelete()
                         }) {
-                            Text("Xóa", fontSize = (14 * scale).sp, color = Color.Black)
+                            Text("Xóa", fontSize = (14 * scale).sp, color = Color.White)
                         }
 
                         DropdownMenuItem(onClick = {
@@ -322,7 +327,7 @@ fun NoteCard(
                             Text(
                                 text = if (note.isPinned) "Bỏ ghim" else "Ghim",
                                 fontSize = (14 * scale).sp,
-                                color = Color.Black
+                                color = Color.White
                             )
                         }
 
@@ -339,7 +344,7 @@ fun NoteCard(
                                 Toast.makeText(context, "Không tìm thấy ứng dụng email nào", Toast.LENGTH_SHORT).show()
                             }
                         }) {
-                            Text("Gửi qua Email", fontSize = (14 * scale).sp, color = Color.Black)
+                            Text("Gửi qua Email", fontSize = (14 * scale).sp, color = Color.White)
                         }
                     }
                 }

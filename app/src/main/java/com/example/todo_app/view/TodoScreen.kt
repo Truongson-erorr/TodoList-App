@@ -53,7 +53,7 @@ fun TodoScreen(
     val incompleteTodos = filteredTodos.filter { !it.isDone }
     val completedTodos = filteredTodos.filter { it.isDone }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Box(modifier = Modifier.fillMaxSize().background(Color(0xFF121212))) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,24 +75,27 @@ fun TodoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp),
-                placeholder = { Text("Tìm kiếm theo tên công việc..", fontSize = 12.sp) },
+                placeholder = {
+                    Text("Tìm kiếm theo tên công việc..", fontSize = 12.sp, color = Color.LightGray)
+                },
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Tìm kiếm",
-                        tint = Color.Gray
+                        tint = Color.LightGray
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(0xFFF5F5F5),
+                    backgroundColor = Color(0xFF2C2C2C),
+                    textColor = Color.White,
+                    cursorColor = Color.White,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 )
             )
 
-            // Bộ lọc theo từng dòng
             FilterSection("Loại", listOf("Personal", "Team"), selectedType) { selectedType = it }
             FilterSection("Thời gian", listOf("Today", "Tomorrow"), selectedDueDate) { selectedDueDate = it }
             FilterSection("Ưu tiên", listOf("Low", "Medium", "High"), selectedPriority) { selectedPriority = it }
@@ -111,7 +114,7 @@ fun TodoScreen(
                                 text = "Chưa hoàn thành",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color.Black,
+                                color = Color.White,
                                 modifier = Modifier.padding(vertical = 6.dp)
                             )
                         }
@@ -130,7 +133,7 @@ fun TodoScreen(
                                 text = "Đã hoàn thành",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color.Black,
+                                color = Color.White,
                                 modifier = Modifier.padding(vertical = 6.dp)
                             )
                         }
@@ -181,11 +184,11 @@ fun FilterSection(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "$title: ${selectedOption ?: ""}",
+                text = "$title: ${selectedOption ?: "Tất cả"}",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
-                color = Color.Black
+                color = Color.White
             )
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
@@ -203,7 +206,7 @@ fun FilterSection(
                 Text(
                     "Tất cả",
                     fontSize = 13.sp,
-                    color = if (selectedOption == null) Color(0xFF6200EE) else Color.Black,
+                    color = if (selectedOption == null) Color(0xFF6200EE) else Color.LightGray,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
@@ -216,7 +219,7 @@ fun FilterSection(
                     Text(
                         option,
                         fontSize = 13.sp,
-                        color = if (selectedOption == option) Color(0xFF6200EE) else Color.Black,
+                        color = if (selectedOption == option) Color(0xFF6200EE) else Color.LightGray,
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
@@ -239,6 +242,7 @@ fun TodoCard(
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = 2.dp,
+        backgroundColor = Color(0xFF2C2C2C),
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
@@ -248,7 +252,6 @@ fun TodoCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(Color.White)
                 .padding(12.dp)
         ) {
             Checkbox(
@@ -266,22 +269,18 @@ fun TodoCard(
                     text = todo.title,
                     fontWeight = FontWeight.Medium,
                     fontSize = 12.sp,
-                    color = Color(0xFF512DA8),
+                    color = Color.White,
                     textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    InfoTag(todo.type, if (todo.type == "Personal") Color(0xFFE3F2FD) else Color(0xFFE8F5E9))
-                    InfoTag(todo.dueDate, Color(0xFFFFF3E0))
+                    InfoTag(todo.type, if (todo.type == "Personal") Color(0xFF37474F) else Color(0xFF2E7D32))
+                    InfoTag(todo.dueDate, Color(0xFF5D4037))
                     InfoTag(todo.priority, when (todo.priority) {
-                        "High" -> Color(0xFFFFEBEE)
-                        "Medium" -> Color(0xFFFFF8E1)
-                        else -> Color(0xFFE8F5E9)
-                    }, when (todo.priority) {
-                        "High" -> Color.Red
-                        "Medium" -> Color(0xFFFFA000)
-                        else -> Color(0xFF388E3C)
-                    })
+                        "High" -> Color(0xFFB71C1C)
+                        "Medium" -> Color(0xFFF57F17)
+                        else -> Color(0xFF1B5E20)
+                    }, textColor = Color.White)
                 }
             }
         }
@@ -289,7 +288,7 @@ fun TodoCard(
 }
 
 @Composable
-fun InfoTag(text: String, bgColor: Color, textColor: Color = Color(0xFF424242)) {
+fun InfoTag(text: String, bgColor: Color, textColor: Color = Color.LightGray) {
     Text(
         text = text,
         fontSize = 10.sp,

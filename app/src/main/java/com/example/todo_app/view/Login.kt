@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.material3.AlertDialog
 
 @Composable
 fun Login(navController: NavController) {
@@ -26,12 +25,16 @@ fun Login(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) } // State để hiển thị dialog
+    var showDialog by remember { mutableStateOf(false) }
 
-    val primaryColor = Color(0xFF1976D2) // Blue
-    val backgroundColor = Color(0xFFF1F6FA)
+    // Dark theme colors
+    val primaryColor = Color(0xFF6200EE)
+    val backgroundColor = Color(0xFF121212)
+    val cardColor = Color(0xFF1E1E1E)
+    val textColor = Color.White
+    val hintColor = Color.Gray
 
-    // Load thông tin đăng nhập đã lưu nếu có
+    // Load saved login
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         email = sharedPreferences.getString("email", "") ?: ""
@@ -41,18 +44,18 @@ fun Login(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF1F6FA))
+            .background(backgroundColor)
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
         Card(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(containerColor = cardColor),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .background(Color.White)
                     .padding(24.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -61,7 +64,7 @@ fun Login(navController: NavController) {
                     text = "Đăng nhập",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -69,10 +72,17 @@ fun Login(navController: NavController) {
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email", fontSize = 12.sp) },
+                    label = { Text("Email", fontSize = 12.sp, color = hintColor) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = hintColor,
+                        focusedTextColor = textColor,
+                        unfocusedTextColor = textColor,
+                        cursorColor = primaryColor
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -80,11 +90,18 @@ fun Login(navController: NavController) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Mật khẩu", fontSize = 12.sp) },
+                    label = { Text("Mật khẩu", fontSize = 12.sp, color = hintColor) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation()
+                    visualTransformation = PasswordVisualTransformation(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = hintColor,
+                        focusedTextColor = textColor,
+                        unfocusedTextColor = textColor,
+                        cursorColor = primaryColor
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -97,13 +114,12 @@ fun Login(navController: NavController) {
                                     val user = auth.currentUser
                                     if (user != null && user.isEmailVerified) {
                                         Toast.makeText(context, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
-                                        // Kiểm tra xem thông tin đã được lưu chưa
                                         val sharedPreferences = context.getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                                         val savedEmail = sharedPreferences.getString("email", null)
                                         if (savedEmail == null) {
-                                            showDialog = true // Chỉ hiển thị dialog nếu chưa lưu
+                                            showDialog = true
                                         } else {
-                                            navController.navigate("MainScreen") // Chuyển hướng ngay nếu đã lưu
+                                            navController.navigate("MainScreen")
                                         }
                                     } else {
                                         Toast.makeText(context, "Vui lòng xác minh email trước khi đăng nhập.", Toast.LENGTH_LONG).show()
@@ -115,7 +131,7 @@ fun Login(navController: NavController) {
                                 }
                             }
                     },
-                    colors = ButtonDefaults.buttonColors(Color.Black),
+                    colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -123,27 +139,29 @@ fun Login(navController: NavController) {
                 ) {
                     Text("Đăng nhập", color = Color.White, fontSize = 12.sp)
                 }
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 TextButton(onClick = {
                     navController.navigate("register")
                 }) {
-                    Text("Bạn không có tài khoản? Đăng ký", color = Color.Black, fontSize = 10.sp)
+                    Text("Bạn không có tài khoản? Đăng ký", color = primaryColor, fontSize = 10.sp)
                 }
             }
         }
     }
 
-    // Dialog hỏi lưu thông tin đăng nhập
     if (showDialog) {
         AlertDialog(
+            containerColor = cardColor,
+            titleContentColor = textColor,
+            textContentColor = hintColor,
             onDismissRequest = { showDialog = false },
             title = { Text("Lưu thông tin đăng nhập") },
             text = { Text("Bạn có muốn lưu thông tin đăng nhập để sử dụng lần sau không?") },
             confirmButton = {
                 Button(
                     onClick = {
-                        // Lưu thông tin vào SharedPreferences
                         val sharedPreferences = context.getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                         sharedPreferences.edit()
                             .putString("email", email)
@@ -152,20 +170,21 @@ fun Login(navController: NavController) {
                         Toast.makeText(context, "Thông tin đăng nhập đã được lưu.", Toast.LENGTH_SHORT).show()
                         showDialog = false
                         navController.navigate("MainScreen")
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                 ) {
-                    Text("Lưu")
+                    Text("Lưu", color = Color.Black)
                 }
             },
             dismissButton = {
                 Button(
                     onClick = {
-                        // Không lưu, chỉ chuyển hướng
                         showDialog = false
                         navController.navigate("MainScreen")
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
                 ) {
-                    Text("Không")
+                    Text("Không", color = Color.White)
                 }
             }
         )
