@@ -63,10 +63,10 @@ fun ProfileScreen(
             ) {
                 Text(
                     text = "Hồ sơ cá nhân",
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.h5,
-                    color = Color.LightGray
+                    color = Color(0xFF6200EE)
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 

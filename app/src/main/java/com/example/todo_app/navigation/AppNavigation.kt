@@ -6,13 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.todo_app.view.AddNoteScreen
-import com.example.todo_app.view.AddTodoScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import com.example.todo_app.view.EditNoteScreen
+import com.example.todo_app.view.IntroNoteScreen
+import com.example.todo_app.view.IntroTodoScreen
 import com.example.todo_app.view.Login
 import com.example.todo_app.view.MainScreen
 import com.example.todo_app.view.NoteByDateScreen
@@ -20,6 +19,7 @@ import com.example.todo_app.view.NoteScreen
 import com.example.todo_app.view.ProfileScreen
 import com.example.todo_app.view.Register
 import com.example.todo_app.view.TodoScreen
+import com.example.todo_app.view.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuth
 
 object Routes {
@@ -39,7 +39,7 @@ fun AppNavigation() {
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = "Login",
+        startDestination = "WelcomeScreen",
         enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(300)) },
         exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(300)) },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(300)) },
@@ -48,31 +48,17 @@ fun AppNavigation() {
         composable("Register") { Register(navController) }
         composable("Login") { Login(navController) }
         composable("MainScreen") { MainScreen(navController) }
-
+        composable("IntroNote") { IntroNoteScreen(navController) }
+        composable("IntroTodo") { IntroTodoScreen(navController) }
+        composable("WelcomeScreen") { WelcomeScreen(navController) }
         composable("NoteScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             NoteScreen(userId, navController)
         }
 
-        composable("AddNoteScreen/{userId}") { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            AddNoteScreen(userId, navController)
-        }
-
         composable("TodoScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             TodoScreen(userId, navController)
-        }
-
-        composable("AddTodoScreen/{userId}") { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            AddTodoScreen(userId, navController)
-        }
-
-        composable("EditNoteScreen/{noteId}/{userId}") { backStackEntry ->
-            val noteId = backStackEntry.arguments?.getString("noteId") ?: ""
-            val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            EditNoteScreen(noteId = noteId, userId = userId, navController = navController)
         }
 
         composable(

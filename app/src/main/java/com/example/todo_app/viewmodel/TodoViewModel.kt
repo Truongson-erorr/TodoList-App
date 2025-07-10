@@ -9,7 +9,6 @@ import java.util.*
 class TodoViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
-    // Danh sách công việc
     val todos = mutableStateListOf<Todo>()
 
     fun loadTodos(userId: String) {
@@ -27,7 +26,7 @@ class TodoViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener {
-                // xử lý lỗi
+
             }
     }
 
@@ -51,11 +50,10 @@ class TodoViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener {
-                // xử lý lỗi
+
             }
     }
 
-    // Lọc công việc theo type, dueDate, priority
     fun filterTodos(
         type: String? = null,
         dueDate: String? = null,

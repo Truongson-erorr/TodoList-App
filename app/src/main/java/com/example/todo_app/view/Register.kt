@@ -168,13 +168,13 @@ fun Register(navController: NavController) {
                                 }
                             }
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF6200EE)),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF92FE9D)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("Đăng ký tài khoản", color = Color.White, fontSize = 12.sp)
+                    Text("Đăng ký tài khoản", color = Color.Black, fontSize = 12.sp)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -182,7 +182,7 @@ fun Register(navController: NavController) {
                 TextButton(onClick = {
                     navController.navigate("Login")
                 }) {
-                    Text("Đã có tài khoản? Đăng nhập", color = Color(0xFF6200EE), fontSize = 10.sp)
+                    Text("Đã có tài khoản? Đăng nhập", color = Color(0xFF92FE9D), fontSize = 10.sp)
                 }
             }
         }

@@ -18,7 +18,6 @@ import java.util.Locale
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun VoiceInputField(
     label: String,

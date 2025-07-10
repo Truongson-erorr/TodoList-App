@@ -52,6 +52,7 @@ fun TodoScreen(
 
     val incompleteTodos = filteredTodos.filter { !it.isDone }
     val completedTodos = filteredTodos.filter { it.isDone }
+    var showAddDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize().background(Color(0xFF121212))) {
         Column(
@@ -150,7 +151,7 @@ fun TodoScreen(
         }
 
         FloatingActionButton(
-            onClick = { navController.navigate("AddTodoScreen/$userId") },
+            onClick = { showAddDialog = true },
             backgroundColor = Color(0xFF6200EE),
             contentColor = Color.White,
             modifier = Modifier
@@ -158,6 +159,17 @@ fun TodoScreen(
                 .padding(12.dp)
         ) {
             Icon(Icons.Default.Add, contentDescription = "Thêm")
+        }
+
+        if (showAddDialog) {
+            AddTodoDialog(
+                userId = userId,
+                onDismiss = { showAddDialog = false },
+                onTodoAdded = {
+                    showAddDialog = false
+                    todoViewModel.loadTodos(userId)
+                }
+            )
         }
     }
 }

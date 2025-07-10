@@ -27,14 +27,12 @@ fun Login(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
-    // Dark theme colors
-    val primaryColor = Color(0xFF6200EE)
+    val primaryColor = Color(0xFF92FE9D)
     val backgroundColor = Color(0xFF121212)
     val cardColor = Color(0xFF1E1E1E)
     val textColor = Color.White
     val hintColor = Color.Gray
 
-    // Load saved login
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         email = sharedPreferences.getString("email", "") ?: ""
@@ -137,7 +135,7 @@ fun Login(navController: NavController) {
                         .fillMaxWidth()
                         .height(40.dp)
                 ) {
-                    Text("Đăng nhập", color = Color.White, fontSize = 12.sp)
+                    Text("Đăng nhập", color = Color.Black, fontSize = 12.sp)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -169,7 +167,9 @@ fun Login(navController: NavController) {
                             .apply()
                         Toast.makeText(context, "Thông tin đăng nhập đã được lưu.", Toast.LENGTH_SHORT).show()
                         showDialog = false
-                        navController.navigate("MainScreen")
+                        navController.navigate("MainScreen") {
+                            popUpTo("Login") { inclusive = true }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                 ) {
@@ -180,7 +180,9 @@ fun Login(navController: NavController) {
                 Button(
                     onClick = {
                         showDialog = false
-                        navController.navigate("MainScreen")
+                        navController.navigate("MainScreen"){
+                            popUpTo("Login") { inclusive = true }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
                 ) {

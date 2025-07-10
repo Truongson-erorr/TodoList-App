@@ -1,7 +1,9 @@
 package com.example.todo_app.view
 
 import android.content.Intent
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -26,11 +28,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todo_app.model.Note
 import com.example.todo_app.viewmodel.NoteViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
     userId: String,
@@ -47,7 +51,8 @@ fun NoteScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Tất cả") }
     val categories = listOf("Tất cả", "Work", "Home", "Healthy")
-
+    var showAddDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
     LaunchedEffect(userId) {
         noteViewModel.loadNotes(userId)
     }
@@ -155,7 +160,10 @@ fun NoteScreen(
                     items(filteredNotes) { note ->
                         NoteCard(
                             note = note,
-                            onEdit = { navController.navigate("EditNoteScreen/${note.id}/$userId") },
+                            onEdit = {
+                                selectedNote = note
+                                showEditDialog = true
+                            },
                             onDelete = {
                                 selectedNote = note
                                 showDialog = true
@@ -172,7 +180,7 @@ fun NoteScreen(
         }
 
         FloatingActionButton(
-            onClick = { navController.navigate("AddNoteScreen/$userId") },
+            onClick = { showAddDialog = true },
             backgroundColor = Color(0xFF6200EE),
             contentColor = Color.White,
             modifier = Modifier
@@ -204,6 +212,28 @@ fun NoteScreen(
                     Text("Hủy", color = Color.Black)
                 }
             }
+        )
+    }
+    if (showAddDialog) {
+        AddNoteDialog(
+            userId = userId,
+            onDismiss = { showAddDialog = false },
+            onNoteAdded = {
+                showAddDialog = false
+                Toast.makeText(context, "Đã thêm ghi chú", Toast.LENGTH_SHORT).show()
+            },
+            noteViewModel = noteViewModel
+        )
+    }
+    if (showEditDialog && selectedNote != null) {
+        EditNoteDialog(
+            note = selectedNote!!,
+            onDismiss = { showEditDialog = false },
+            onNoteUpdated = {
+                showEditDialog = false
+                noteViewModel.loadNotes(userId)
+            },
+            noteViewModel = noteViewModel
         )
     }
 }

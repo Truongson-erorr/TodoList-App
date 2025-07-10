@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todo_app.model.Note
@@ -24,118 +26,144 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddNoteScreen(
+fun AddNoteDialog(
     userId: String,
-    navController: NavController,
-    noteViewModel: NoteViewModel = viewModel()
+    onDismiss: () -> Unit,
+    onNoteAdded: () -> Unit,
+    noteViewModel: NoteViewModel = viewModel(),
 ) {
-    val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     val categories = listOf("Work", "Home", "Study", "Healthy")
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
-    ) {
-        Spacer(modifier = Modifier.height(60.dp))
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFF1E1E1E)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Thêm ghi chú",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
 
-        Text(
-            text="Thêm ghi chú",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h5,
-            color = Color.Black
-        )
+                Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
+                OutlinedTextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Tiêu đề", color = Color.Gray, fontSize = 12.sp) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray,
+                        cursorColor = Color.White
+                    )
+                )
 
-        VoiceInputField(
-            label = "Tiêu đề",
-            value = title,
-            onValueChange = { title = it },
-            modifier = Modifier.fillMaxWidth()
-        )
+                Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Nội dung", color = Color.Gray, fontSize = 12.sp) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray,
+                        cursorColor = Color.White
+                    )
+                )
 
-        VoiceInputField(
-            label = "Nội dung",
-            value = description,
-            onValueChange = { description = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-        )
+                Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Dropdown chọn danh mục
-        Box {
-            OutlinedTextField(
-                value = category,
-                onValueChange = { },
-                label = { Text("Danh mục") },
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(onClick = { expanded = true }) {
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Chọn danh mục")
+                Box {
+                    OutlinedTextField(
+                        value = category,
+                        onValueChange = {},
+                        label = { Text("Danh mục", color = Color.Gray, fontSize = 12.sp) },
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        trailingIcon = {
+                            IconButton(onClick = { expanded = true }) {
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = Color.White)
+                            }
+                        },
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = Color.White,
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.Gray
+                        )
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        categories.forEach {
+                            DropdownMenuItem(onClick = {
+                                category = it
+                                expanded = false
+                            }) {
+                                Text(it)
+                            }
+                        }
                     }
                 }
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                categories.forEach { cat ->
-                    DropdownMenuItem(onClick = {
-                        category = cat
-                        expanded = false
-                    }) {
-                        Text(cat)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                    TextButton(onClick = onDismiss) {
+                        Text("Hủy", color = Color.LightGray)
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Button(
+                        onClick = {
+                            if (title.isNotBlank() && description.isNotBlank() && category.isNotBlank()) {
+                                val currentDate = java.time.LocalDateTime.now()
+                                    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+                                val note = Note(
+                                    title = title,
+                                    description = description,
+                                    userId = userId,
+                                    date = currentDate,
+                                    category = category
+                                )
+
+                                noteViewModel.addNote(note) {
+                                    onNoteAdded()
+                                }
+                            } else {
+                                Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF6200EE))
+                    ) {
+                        Text("Lưu", color = Color.White)
                     }
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                if (title.isNotBlank() && description.isNotBlank() && category.isNotBlank()) {
-                    val currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    val note = Note(
-                        title = title,
-                        description = description,
-                        userId = userId,
-                        date = currentDate,
-                        category = category
-                    )
-                    noteViewModel.addNote(note) {
-                        Toast.makeText(context, "Đã thêm ghi chú", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-                    }
-                } else {
-                    Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(25.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Black,
-                contentColor = Color.White
-            )
-        ) {
-            Text("Lưu", style = MaterialTheme.typography.button)
         }
     }
 }
