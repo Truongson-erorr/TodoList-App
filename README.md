@@ -79,7 +79,7 @@
 
 ## 📩 Contact
 
-For suggestions, contributions, or questions, feel free to open an issue or reach out.
+For suggestions, contributions or questions, be free to open a problem or approach, I am ready to receive.
 
 ---
 
