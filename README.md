@@ -48,7 +48,7 @@ The app supports secure authentication, smart task prioritization, calendar-base
   </tr>
 </table>
 
-### 2. Notes Home – Add / Edit / Delete Notes
+### 2. Notes Home – Add / Edit / Delete Notes, Pin & Priority Levels
 <table align="center">
   <tr>
     <td><img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1752135283/z6790650153870_aae797ae69f3030f841e400b05e13808_vwlumq.jpg" width="180"/></td>
@@ -57,7 +57,7 @@ The app supports secure authentication, smart task prioritization, calendar-base
   </tr>
 </table>
 
-### 3. Todo Management – Add / Edit / Complete Tasks
+### 3. Todo Management – Add / Edit / Complete Tasks with Priority Levels
 <table align="center">
   <tr>
     <td><img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1752135284/z6790650225000_48ba31e2296a21eda5f543861b6037b5_ulwozv.jpg" width="180"/></td>
